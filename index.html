@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دعوة زفاف - Amir & Mai</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Great+Vibes&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #2c0b14;
+            font-family: 'Amiri', serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            color: #4a1525;
+            overflow-x: hidden;
+        }
+        
+        #envelope-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #2c0b14;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            transition: opacity 1s ease, transform 1s ease;
+        }
+        
+        .envelope-container {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .envelope {
+            width: 340px;
+            height: 230px;
+            position: relative;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            border: 2px solid #d4af37;
+        }
+
+        .envelope img.bg-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .wax-seal {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 4;
+            position: relative;
+            animation: rotateSeal 4s infinite linear;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            overflow: hidden;
+            border: 2px solid #d4af37;
+        }
+
+        .wax-seal img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        @keyframes rotateSeal {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .open-text {
+            position: absolute;
+            bottom: -50px;
+            width: 100%;
+            text-align: center;
+            color: #fcf8f2;
+            font-size: 17px;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .open .envelope {
+            transform: scale(1.5);
+            opacity: 0;
+        }
+
+        .open {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 420px;
+            margin: auto;
+            background: #fcf8f2;
+            padding: 25px;
+            min-height: 100vh;
+            box-shadow: 0px 4px 20px rgba(0,0,0,0.2);
+            display: none;
+            opacity: 0;
+            transition: opacity 1.5s ease;
+        }
+
+        .invitation-img {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border: 2px solid #d4af37;
+        }
+
+        h1.names {
+            font-family: 'Great Vibes', cursive;
+            color: #721c24;
+            font-size: 48px;
+            margin: 10px 0;
+        }
+
+        .countdown {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+
+        .box {
+            border: 1px solid #d4af37;
+            padding: 10px;
+            border-radius: 10px;
+            width: 60px;
+            background: #fff;
+            color: #721c24;
+            font-weight: bold;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #721c24;
+            color: #fff;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 25px;
+            margin-top: 15px;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .wishes-section {
+            margin-top: 30px;
+            background: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #e0d0c0;
+        }
+
+        textarea {
+            width: 90%;
+            height: 70px;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #d4af37;
+            font-family: 'Amiri', serif;
+            resize: none;
+            margin-bottom: 10px;
+        }
+
+        .send-btn {
+            background: #d4af37;
+            color: #2c0b14;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: 'Amiri', serif;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ملف الصوت اللي هيشتغل لما ندوس على الشمع -->
+    <audio id="wedding-audio" src="wedding-music.mp3" preload="auto"></audio>
+
+    <!-- الظرف بالصور المخصصة -->
+    <div id="envelope-overlay" onclick="openInvitation()">
+        <div class="envelope-container">
+            <div class="envelope">
+                <img src="envelope-bg.jpg" alt="Envelope Background" class="bg-img">
+                <div class="wax-seal">
+                    <img src="seal-img.jpg" alt="Seal">
+                </div>
+            </div>
+            <div class="open-text">اضغط لفتح الدعوة وتشغيل الموسيقى 💌</div>
+        </div>
+    </div>
+
+    <!-- محتوى الدعوة -->
+    <div class="container" id="main-content">
+        <img src="bride.jpg" alt="Amir & Mai" class="invitation-img">
+
+        <h1 class="names">Amir & Mai</h1>
+        <p style="color: #666; font-size: 18px;">يسعدنا حضوركم حفل زفافنا المبروك</p>
+        <p style="font-weight: bold; color: #8b0000;">15 نوفمبر 2026</p>
+
+        <hr style="border: 0; border-top: 1px solid #d4af37; margin: 20px 0;">
+
+        <h3 style="color: #721c24;">العد التنازلي ليوم العُمر</h3>
+        <div class="countdown">
+            <div class="box"><span id="days">00</span><br>يوم</div>
+            <div class="box"><span id="hours">00</span><br>ساعة</div>
+            <div class="box"><span id="mins">00</span><br>دقيقة</div>
+            <div class="box"><span id="secs">00</span><br>ثانية</div>
+        </div>
+
+        <h3 style="color: #721c24;">موقع القاعة</h3>
+        <a class="btn" href="https://maps.app.goo.gl/wrayVW2otzHH7pPL8" target="_blank">افتح الموقع على الخريطة 📍</a>
+
+        <div class="wishes-section">
+            <h3 style="color: #721c24; margin-top: 0;">ارسل تهنئة للعروسين ✍️</h3>
+            <form action="mailto:mai.amir547@gmail.com" method="POST" enctype="text/plain">
+                <textarea name="التهنئة" placeholder="اكتب مباركتك هنا..." required></textarea><br>
+                <button type="submit" class="send-btn">إرسال التهنئة</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function openInvitation() {
+            // تشغيل الأغنية فور الضغط على الظرف والختم
+            const audio = document.getElementById('wedding-audio');
+            audio.play().catch(error => {
+                console.log("Audio play blocked or failed: ", error);
+            });
+
+            const overlay = document.getElementById('envelope-overlay');
+            const content = document.getElementById('main-content');
+            
+            overlay.classList.add('open');
+            
+            setTimeout(() => {
+                overlay.style.display = 'none';
+                content.style.display = 'block';
+                setTimeout(() => {
+                    content.style.opacity = '1';
+                }, 50);
+            }, 800);
+        }
+
+        const weddingDate = new Date("November 15, 2026 19:00:00").getTime();
+
+        const timer = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = weddingDate - now;
+
+            document.getElementById("days").innerText = Math.floor(distance / (1000 * 60 * 60 * 24));
+            document.getElementById("hours").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            document.getElementById("mins").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            document.getElementById("secs").innerText = Math.floor((distance % (1000 * 60)) / 1000);
+        }, 1000);
+    </script>
+</body>
+</html>
